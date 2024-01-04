@@ -25,6 +25,7 @@ router
             })
             res.status(201).send(newComment)
         } catch (e) {
+            // console.log(e.message)
             res.status(500).json({
                 message: 'На сервере произошла ошибка. Попробуйте позже.'
             })
@@ -38,12 +39,13 @@ router.delete('/:commentId', auth, async (req, res) => {
         const removedComment = await Comment.findById(commentId)
 
         if (removedComment.userId.toString() === req.user._id) {
-            await removedComment.remove()
+            await Comment.findByIdAndDelete(commentId)
             return res.send(null)
         } else {
             res.status(401).json({message: 'Unauthorized'})
         }
     } catch (e) {
+        // console.log(e.message)
         res.status(500).json({
             message: 'На сервере произошла ошибка. Попробуйте позже.'
         })

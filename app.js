@@ -2,14 +2,27 @@ const express = require('express')
 const mongoose = require('mongoose')
 const config = require('config')
 const chalk = require('chalk')
+const cors = require('cors')
 const initDatabase = require('./startUp/initDatabase')
 const routes = require('./routes')
 
 const app = express()
 
+const corsOptions = {
+    // origin: ['*', 'http://127.0.0.1:3000/', 'http://localhost:3000/', 'http://localhost:3000', 'localhost:3000'],
+    // credentials:true,            //access-control-allow-credentials:true
+    // optionSuccessStatus:200,
+    // "origin": "*",
+    // "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    // "preflightContinue": true,
+    // "optionsSuccessStatus": 204
+}
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use('/api', routes)
+// app.use(cors(corsOptions))
+app.use(cors())
 
 const PORT = config.get('port') ?? 8008
 
